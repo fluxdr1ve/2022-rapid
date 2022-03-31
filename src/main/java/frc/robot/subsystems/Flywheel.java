@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.FlywheelConstants;
 import com.revrobotics.CANSparkMax;
@@ -14,6 +14,8 @@ public class Flywheel {
   public static enum FlywheelStates {
     OFF, IN, OUT
   }
+
+  Timer timer = new Timer();
 
   private FlywheelStates state = FlywheelStates.OFF;
 
@@ -48,10 +50,10 @@ public class Flywheel {
     }
   }
 
-  public void flyWheelToggle(XboxController controller, double lowPower, double highPower)
+  public void flyWheelToggle(XboxController controller1, XboxController controller2, double lowPower, double highPower)
   {
     
-    if (controller.getRawButtonPressed(1)) {
+    if (controller1.getAButtonPressed() || controller2.getRightBumperPressed()) {
       if (toggle) {
           // Current state is true so turn off
           stop();
@@ -63,8 +65,7 @@ public class Flywheel {
           toggle = true;
       }
     }
-
-    if (controller.getRawButtonPressed(2)) {
+    if (controller1.getYButtonPressed() || controller2.getLeftBumperPressed()) {
       if (toggle) {
           // Current state is true so turn off
           stop();
