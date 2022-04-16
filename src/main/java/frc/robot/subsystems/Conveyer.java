@@ -1,26 +1,27 @@
 package frc.robot.subsystems;
 
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ConveyerConstants;
-//import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Conveyer {
-    private TalonSRX conveyer = new TalonSRX(ConveyerConstants.kRightConveyerID);
-    private TalonSRX leftConveyer = new TalonSRX(ConveyerConstants.kLeftConveyerID);
-  public static enum ConveyerStates {
+public class Conveyer 
+{
+  private TalonSRX conveyer = new TalonSRX(ConveyerConstants.kRightConveyerID);
+  private TalonSRX leftConveyer = new TalonSRX(ConveyerConstants.kLeftConveyerID);
+  
+  public static enum ConveyerStates 
+  {
     OFF, IN, OUT
   }
 
   private ConveyerStates state = ConveyerStates.OFF;
 
-  /**
-   * Creates a new Conveyer.
-   */
-  public Conveyer() {
+  // Creates a new Conveyer.
+  
+  public Conveyer() 
+  {
     leftConveyer.follow(conveyer);
     conveyer.setNeutralMode(NeutralMode.Brake);
     conveyer.setInverted(true);
@@ -41,44 +42,55 @@ public class Conveyer {
     {
       stop();
     }
-    
-    /*if(controller.getBButtonPressed())
-    {
-      index(power);
-    }
-    else if (controller2.getXButtonPressed())
-    {
-      index(-power);
-    }
-    else
-    {
-      stop();
-    }*/
 
   }
-  /**
-   * spins the conveyer at a given power
-   * 
-   * @param power the power to spin the conveyer at [-1, 1]. Negative values spin outwards.
-   */
-  public void index(double power) {
+  
+  // spins the conveyer at a given power
+   
+  // @param power the power to spin the conveyer at [-1, 1]. Negative values spin outwards.
+  
+  public void index(double power) 
+  {
     conveyer.set(ControlMode.PercentOutput, power);
   }
 
-  /**
-   * Stop the conveyer
-   */
-  public void stop() {
+  // Stop the conveyer
+  
+  public void stop() 
+  {
     conveyer.set(ControlMode.PercentOutput, 0);
   }
 
-
-  public void setState(ConveyerStates istate) {
+  public void setState(ConveyerStates istate) 
+  {
     state = istate;
   }
 
-  public ConveyerStates getState() {
+  public ConveyerStates getState() 
+  {
     return state;
   }
 
+  public boolean getLeftConveyerState()
+  {
+    boolean status = false;  
+    if (leftConveyer.getMotorOutputPercent() != 0)
+    {
+      status = true;
+    }
+    return status;
+  }
+
+  public boolean getRightConveyerState()
+  {
+    boolean status = false;  
+    
+    //System.out.println(conveyer.getMotorOutputPercent() + "\n");
+
+    if (conveyer.getMotorOutputPercent() != 0)
+    {
+      status = true;
+    }
+    return status;
+  }
 }
